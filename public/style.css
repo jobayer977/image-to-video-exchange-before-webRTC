@@ -1,0 +1,32 @@
+.wrapper {
+	background: lightskyblue;
+	padding: 10px;
+}
+.local-video {
+	height: 450px;
+	width: 450px;
+	object-fit: cover;
+	position: fixed;
+	bottom: 15px;
+	right: 15px;
+}
+.remote-video {
+	height: 100%;
+	width: 100%;
+	position: fixed;
+	top: 0;
+	left: 0;
+}
+.remote-video img {
+	height: 100%;
+	width: 100%;
+	object-fit: cover;
+}
+.local-video video {
+	height: 100%;
+	width: 100%;
+	object-fit: cover;
+	border-radius: 50px;
+	box-shadow: 0 0 10px #000;
+	border: 4px solid #fff;
+}

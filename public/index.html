@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Video Call Without WebRTC</title>
+		<link rel="stylesheet" href="./style.css" />
+	</head>
+	<body>
+		<div class="wrapper">
+			<div class="remote-video">
+				<img />
+			</div>
+			<div class="local-video">
+				<video></video>
+			</div>
+		</div>
+
+		<script
+			src="https://cdn.socket.io/4.5.0/socket.io.min.js"
+			integrity="sha384-7EyYLQZgWBi67fBtVxw60/OWl1kjsfrPFcaU0pp0nAh+i8FD068QogUvg85Ewy1k"
+			crossorigin="anonymous"
+		></script>
+		<script>
+			const socket = io.connect('http://localhost:3000/')
+			// local side
+			const video = document.querySelector('video')
+			const canvas = document.createElement('canvas')
+			const ctx = canvas.getContext('2d')
+			navigator.mediaDevices.getUserMedia({ video: true }).then((stream) => {
+				video.srcObject = stream
+				video.play()
+				setInterval(() => {
+					canvas.height = video.videoHeight
+					canvas.width = video.videoWidth
+					ctx.drawImage(video, 0, 0, canvas.width, canvas.height)
+					const imageData = canvas.toDataURL('image/jpeg', 0.4)
+					socket.emit('sendImage', imageData)
+				}, 10)
+			})
+			// local side
+			// remote side
+			const remoteImage = document.querySelector('img')
+			socket.on('receiveImage', (imageData) => {
+				remoteImage.src = imageData
+			})
+			// remote side
+		</script>
+	</body>
+</html>
